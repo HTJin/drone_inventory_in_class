@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Flask Flash Message to user -->
+{% with messages = get_flashed_messages(with_categories = true) %}
+    {% if messages %}
+        {% for cat, msg in messages %}
+            {% if cat == 'auth-success' %}
+                <div class="container">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" onclick="this.parentElement.style.display='none'">&times;</button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<header class="hero-section">
+    <h3 class="header-text">Welcome to Coding Drones, {{ current_user.username }}</h3>
+    <main class="container drone-form">
+        <div class="row">
+            <aside class="col-12 col-md-6">
+                <h2>Create A Drone!</h2>
+                {% include 'drone_form.html' %}
+            </aside>
+        </div>
+    </main>
+</header>
+
+<div class="container">
+    <h3>Here are your profile details:</h3>
+    <li class="list-group-item">Email: {{ current_user.email }}</li>
+    <li class="list-group-item">Token: {{ current_user.token }}</li>
+    <div class="row mt-4">
+        {% for drone in drones %}
+            <div class="col-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://media.tenor.com/LbJUJxEJ0MsAAAAC/cool-beans-hot-rod.gif" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ drone.name }} - ${{ drone.cost_of_production }}</h5>
+                        <p class="card-text">{{ drone.description }}</p>
+                        <p>{{ drone.random_joke }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
